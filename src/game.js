@@ -1,72 +1,41 @@
-(function () {
+var Game = (function (chicken, bg) {
     var canvas = document.getElementById('canvas'),
-        ctx = canvas.getContext('2d'),
-        player = {},
-        ground = [],
-        platformWidth = 32,
-        platformHeight = canvas.height - platformWidth * 4;
+    ctx = canvas.getContext('2d');
 
     var requestAnimFrame = (function(){
         return  window.requestAnimationFrame       ||
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame    ||
-                window.oRequestAnimationFrame      ||
-                window.msRequestAnimationFrame     ||
-                function(callback, element){window.setTimeout(callback, 1000 / 60);};
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      ||
+        window.msRequestAnimationFrame     ||
+        function(callback, element){window.setTimeout(callback, 1000 / 60);};
     })();
 
-    var assetLoader = (function () {
-        this.images = {
-            'bg': 'background.png',
-            'chicken': 'chicken.png'
-        };
+    var keyState = {};
 
-        var assetsLoaded = 0;
-        var numImages = Object.keys(this.images).length;
-        this.totalAssets = numImages;
+    chicken.loadFrames();
+    setTimeout(function() {
+        tick();
+        window.addEventListener('keydown', function (e) {
+            keyState[e.keyCode] = true;
+        }, true);
 
-        function assetLoaded(dict, name) {
-            if (this[dict][name].status !== 'loading') {
-                return;
-            }
-            this[dict][name].status = 'loaded';
-            assetsLoaded++;
-            if (assetsLoaded === this.totalAssets && typeof this.finished = 'function') {
-                this.finished();
-            }
+        window.addEventListener('keyup', function (e) {
+            keyState[e.keyCode] = false;
+        }, true);
+    }, 1500);
+
+    var tick = function () {
+        requestAnimFrame(tick);
+        ctx.drawImage(bg, 0, 0);
+        if (keyState[37]) {
+            chicken.moveLeft();
+        } 
+
+        if (keyState[39]) {
+            chicken.moveRight();
         }
-
-        this.downloadAll = function() {
-            var _self = this;
-            var src;
-            for (var img in this.images) {
-                if (this.images.hasOwnProperty(img)) {
-                    src = this.images[img];
-                    (function(_self, img) {
-                        _self.images[img] = new Image();
-                        _self.images[img].status = 'loading';
-                        _self.images[img].name = img;
-                        _self.images[img].onload = function () {
-                            assetLoaded.call(_self, 'images', img)
-                        };
-                        _self.images[img].src = src;
-                    })(_self, img);
-                }
-            }
-        }
-
-        return {
-            images: this.images,
-            totalAssets: this.totalAssets,
-            downloadAll: this.downloadAll
-        };
-    })();
-
-    assetLoader.finished = function () {
-        startGame();
-    }
-
-    function startGame() {
-        this.ctx.drawImage
-    }
-})();
+        chicken.update();
+        ctx.drawImage(chicken.frameToDraw, chicken.x, chicken.y);
+    };
+})(chicken, bg);
