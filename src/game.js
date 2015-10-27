@@ -1,4 +1,31 @@
-var Game = (function (chicken, bg) {
+var Game = (function (loader, chicken, bg) {
+    var assets = {};
+
+    var preloader = { 
+        el: document.getElementById('preloader'),
+        show: function () {
+            this.el.innerHTML = 'Loading...';
+        },
+        hide: function () {
+            this.el.innerHTML = '';
+        }
+    };
+
+    preloader.show();
+    console.log(loader); 
+    loader.loadGame(function (loadedAssets) {
+        assets = loadedAssets;
+        init();
+        preloader.hide();
+        tick(); // first tick = start game loop.
+    });
+
+    var init = function () {
+        chicken.frames = assets.chicken;
+    };
+
+
+
     var canvas = document.getElementById('canvas'),
     ctx = canvas.getContext('2d');
 
@@ -57,4 +84,4 @@ var Game = (function (chicken, bg) {
             ctx.drawImage(chicken.frameToDraw, chicken.x, chicken.y);
         }
     };
-})(chicken, bg);
+})(loader, chicken, bg);
