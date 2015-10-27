@@ -4,6 +4,8 @@ var chicken = {
     changeFrame: false,
     frameToDraw: null,
     clock: 0,
+    cntr: 0, 
+    adder: -8, 
     animation: {
         totalFrames: 4,
         currentFrame: 0,
@@ -31,7 +33,23 @@ var chicken = {
         this.x -= 5;
         this.isMoving = true;
     },
+    jump: function () {
+        this.isJumping = true;
+    },
     update: function () {
+        if (this.isJumping) {
+            this.cntr++;
+            //console.log(this.cntr);
+            this.y += this.adder;
+            if (this.cntr === 20) {
+                this.adder = 8;
+            }
+            if (this.cntr === 40) {
+                this.isJumping = false;
+                this.cntr = 0;
+                this.adder = -8;
+            }
+        }
         if (this.isMoving) {
             this.clock++;
             this.isMoving = false;
