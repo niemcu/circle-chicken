@@ -24,8 +24,6 @@ var Game = (function (loader, chicken, bg) {
         chicken.frames = assets.chicken;
     };
 
-
-
     var canvas = document.getElementById('canvas'),
     ctx = canvas.getContext('2d');
 
@@ -83,5 +81,7 @@ var Game = (function (loader, chicken, bg) {
         } else {
             ctx.drawImage(chicken.frameToDraw, chicken.x, chicken.y);
         }
+        // obstacle
+        ctx.fillRect(40, 40, 120, 120);
     };
 })(loader, chicken, bg);

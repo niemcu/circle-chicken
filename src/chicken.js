@@ -1,6 +1,7 @@
 var chicken = {
     x: 0,
     y: 300,
+    step: 3,
     changeFrame: false,
     frameToDraw: null,
     clock: 0,
@@ -26,11 +27,11 @@ var chicken = {
         }
     },
     moveRight: function () {
-        this.x += 5;
+        this.x += this.step;
         this.isMoving = true;
     },
     moveLeft: function () {
-        this.x -= 5;
+        this.x -= this.step; 
         this.isMoving = true;
     },
     jump: function () {
@@ -54,9 +55,9 @@ var chicken = {
             this.clock++;
             this.isMoving = false;
         }
-        if (this.clock % 10 === 0) {
+        if (this.clock % 11 === 0) {
             this.changeFrame = true;
-            this.clock = 0;
+            this.clock = 1;
         }
         this.frameToDraw = this.animation.frames[this.animation.currentFrame];
         if (this.changeFrame) {

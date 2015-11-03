@@ -1,3 +1,4 @@
+//TODO co w przypadku gdy nie ma danego obrazka?
 var loader = (function () {
 
     var dir = 'assets/',
